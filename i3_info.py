@@ -3,7 +3,7 @@
 # https://i3ipc-python.readthedocs.io/en/latest/
 
 
-import json
+from json import dumps
 from os import system
 from i3ipc.aio import Connection
 from i3ipc import Event
@@ -31,12 +31,6 @@ def on_window(i3, event):
 
 
 # Report event and tree information
-async def binding_report(i3, event):
-    binding = event.ipc_data["binding"]["command"].strip()
-    #binding = event.ipc_data
-    print(f"binding: {binding}\n")
-
-# Report event and tree information
 async def on_window_focus(i3, event):
     i3_tree = await i3.get_tree()
     workspaces = await i3.get_workspaces()
@@ -44,28 +38,41 @@ async def on_window_focus(i3, event):
     # Capture event data.
     i3_ipc_event_data = event.ipc_data
     # Convert into JSON:
-    i3_ipc_event_data_formatted = json.dumps(i3_ipc_event_data, indent=4)
+    i3_ipc_event_data_formatted = dumps(i3_ipc_event_data, indent=2)
     # Writing data to a file
-    with open("./i3_info.cache", "w") as cache_file:
-        cache_file.write(f"event.ipc_data():\n  {i3_ipc_event_data_formatted}\n")
+    with open("./i3_info_window.cache", "w") as cache_file:
+        cache_file.write(f"i3.on(Event.WINDOW_FOCUS, on_window_focus):\n{i3_ipc_event_data_formatted}\n")
+    # Parse data into variables
+    window_output = str(i3_ipc_event_data["container"]["output"])
+    focused = i3_tree.find_focused()
+    window_workspace = focused.workspace()
+    window_container_id = str(i3_ipc_event_data["container"]["id"])
     window_title = str(i3_ipc_event_data["container"]["window_properties"]["title"]).rsplit(' ', 1)[-1]
     window_instance = str(i3_ipc_event_data["container"]["window_properties"]["instance"]).rsplit(' ', 1)[-1]
     window_class = str(i3_ipc_event_data["container"]["window_properties"]["class"]).rsplit(' ', 1)[-1]
+    window_id = str(i3_ipc_event_data["container"]["window"])
     window_type = str(i3_ipc_event_data["container"]["window_type"])
     window_marks = str(i3_ipc_event_data["container"]["marks"])
     rect = str(i3_ipc_event_data["container"]["rect"])
     deco_rect = str(i3_ipc_event_data["container"]["deco_rect"])
     window_rect = str(i3_ipc_event_data["container"]["window_rect"])
     window_geometery = str(i3_ipc_event_data["container"]["geometry"])
-    window_id = str(i3_ipc_event_data["container"]["window"])
-    window_container_id = str(i3_ipc_event_data["container"]["id"])
-    window_output = str(i3_ipc_event_data["container"]["output"])
-    focused = i3_tree.find_focused()
-    window_workspace = focused.workspace()
+    # Clear the screen and print a report.
     clear()
-    print(f"output: {window_output}")
-    print(f'workspace: {window_workspace.name}')
-    print(f"container_id: {window_container_id}")
+    #print(f"output: {window_output}")
+    print(f"output: ", end = '')
+    for output in outputs:
+        if window_output in output.name:
+            print(f"[{output.name}] ", end = '')
+        else:
+            print(f"{output.name} ", end = '')
+    print(f"\nworkspace: ", end = '')
+    for workspace in workspaces:
+        if window_workspace.name in workspace.name:
+            print(f"[{workspace.name}] ", end = '')
+        else:
+            print(f"{workspace.name} ", end = '')
+    print(f"\ncontainer_id: {window_container_id}")
     print(f"title: {window_title}")
     print(f"instance: {window_instance}")
     print(f"class: {window_class}")
@@ -89,35 +96,29 @@ async def on_window_focus(i3, event):
         dimension += str(value) + ', '
     print(f"geometery: ({dimension.rstrip(', , ')})\n")
 
-    if "binding" in event.ipc_data:
-        binding = event.ipc_data["binding"]["command"].strip()
-        print(f"binding: {binding}\n")
-
-    # get some information about the focused window
-    #print(f'Focused window: {focused.name}')
-    #window_output = focused.output()
-    #print(f'window_output: {window_output.name}')
-
-    #print(f'outputs:')
-    #for output in outputs:
-        #print(f'  {output.name}')
-    #print()
-    #print(f'workspaces:')
-    #for workspace in workspaces:
-        #print(f'  {workspace.name}')
-    #print()
+# Report event and tree information
+async def binding_report(i3, event):
+    binding = event.ipc_data["binding"]["command"].strip()
+    print(f"binding:\n  {binding}\n")
+    # Capture event data.
+    i3_ipc_event_data = event.ipc_data
+    # Convert into JSON:
+    i3_ipc_event_data_formatted = dumps(i3_ipc_event_data, indent=2)
+    # Writing data to a file
+    with open("./i3_info_binding.cache", "w") as cache_file:
+        cache_file.write(f"i3.on(Event.BINDING, binding_report):\n{i3_ipc_event_data_formatted}\n")
+    return "test_complete"
 
 
 async def main():
     i3 = await Connection(auto_reconnect=True).connect()
-    #workspaces = await i3.get_workspaces()
 
     i3.on(Event.WINDOW_FOCUS, on_window_focus)
-    i3.on(Event.BINDING, on_window_focus, binding_report)
+    i3.on(Event.BINDING, binding_report)
+    i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
 
     #i3.on(Event.BINDING, on_window_focus)
     #i3.on(Event.WINDOW, on_window)
-    #i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
 
     # Reading from file
     #with open("./i3_info.cache", "r+") as cache_file:
