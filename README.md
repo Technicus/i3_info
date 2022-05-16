@@ -1,7 +1,7 @@
 # i3_info
-<p>A tool to display information about i3 window manager.<br>
+A tool to display information about i3 window manager.<br>
 Inspired by bublabs top secret technology `i3_info`.<br>
-The utility was presented in bublabs video ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).<br></p>
+The utility was presented in bublabs video ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).<br>
 
 ## Bugs
 The program will eventually fail due to a JSON parse error in the line: `tree = await i3.get_tree()`.
