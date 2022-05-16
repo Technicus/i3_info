@@ -26,10 +26,6 @@ async def on_workspace_focus(i3, event):
             #print(f"event:\n  {event}\n")
 
 
-def on_window(i3, event):
-    print(f"on_window():\n  {event}\n")
-
-
 # Report event and tree information
 async def on_window_focus(i3, event):
     tree = await i3.get_tree()
@@ -96,8 +92,9 @@ async def on_window_focus(i3, event):
         dimension += str(value) + ', '
     print(f"geometery: ({dimension.rstrip(', , ')})\n")
 
-# Report event and tree information
+
 async def binding_report(i3, event):
+    # Report event and tree information
     binding = event.ipc_data["binding"]["command"].strip()
     print(f"binding:\n  {binding}\n")
     # Capture event data.
@@ -112,23 +109,19 @@ async def binding_report(i3, event):
 
 async def main():
     i3 = await Connection(auto_reconnect=True).connect()
-
     i3.on(Event.WINDOW_FOCUS, on_window_focus)
     i3.on(Event.BINDING, binding_report)
     i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
-
-    #i3.on(Event.BINDING, on_window_focus)
     #i3.on(Event.WINDOW, on_window)
 
     # Reading from file
-    #with open("./i3_info.cache", "r+") as cache_file:
+    # with open("./i3_info.cache", "r+") as cache_file:
         ## Reading form a file
         #print(cache_file.read())
 
     await i3.main()
 
 
-# Proceed through the main() entrance.
 if __name__ == "__main__":
     clear()
     asyncio.new_event_loop().run_until_complete(main())
