@@ -44,10 +44,8 @@ async def on_window_focus(i3, event):
     i3_ipc_event_data = event.ipc_data
     # Convert into JSON:
     i3_ipc_event_data_formatted = json.dumps(i3_ipc_event_data, indent=4)
-    with open("./i3_info.cache", "w") as cache_file:
     # Writing data to a file
-        #cache_file.write(f"event:\n  {event}\n\n")
-        #cache_file.write(f"i3.get_tree():\n  {i3_tree}\n\n")
+    with open("./i3_info.cache", "w") as cache_file:
         cache_file.write(f"event.ipc_data():\n  {i3_ipc_event_data_formatted}\n")
     window_title = str(i3_ipc_event_data["container"]["window_properties"]["title"]).rsplit(' ', 1)[-1]
     window_instance = str(i3_ipc_event_data["container"]["window_properties"]["instance"]).rsplit(' ', 1)[-1]
@@ -107,27 +105,6 @@ async def on_window_focus(i3, event):
     #for workspace in workspaces:
         #print(f'  {workspace.name}')
     #print()
-
-
-    #print(f"keybind:{}")
-    #print(f"action:{}")
-    #print(f"window_workspace: {str(i3_tree.workspace)}\n")
-    #print(f"\ni3_tree attributes:")
-    #for attribute in dir(i3_tree):
-        #if '__' not in attribute:
-            #print(f"{attribute}")
-    #print(f"\ntype(i3_tree.workspace): {type(i3_tree.workspace())}")
-    #print(f"\ntype(i3_tree.workspace).__getattribute__: {i3_tree.workspace.__getattribute__}")
-    #print(f"\ni3_tree.workspace attributes:")
-    #for attribute in dir(i3_tree.workspace()):
-        ##if '__' not in attribute:
-        #print(f"{attribute}")
-    #print(f"\ntype(i3_tree.workspaces): {type(i3_tree.workspaces())}")
-    #print(f"\ni3_tree.workspaces attributes:")
-    #for attribute in dir(i3_tree.workspaces()):
-        ##if '__' not in attribute:
-        #print(f"{attribute}")
-
 
 
 async def main():
