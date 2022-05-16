@@ -31,13 +31,16 @@ async def on_window_focus(i3, event):
     tree = await i3.get_tree()
     workspaces = await i3.get_workspaces()
     outputs = await i3.get_outputs()
+
     # Capture event data.
     i3_ipc_event_data = event.ipc_data
     # Convert into JSON:
     i3_ipc_event_data_formatted = dumps(i3_ipc_event_data, indent=2)
+
     # Writing data to a file
-    #with open("./i3_info_window.cache", "w") as cache_file:
-        #cache_file.write(f"{i3_ipc_event_data_formatted}\n")
+    with open("./i3_info_window.cache", "w") as cache_file:
+        cache_file.write(f"{i3_ipc_event_data_formatted}\n")
+
     # Parse data into variables
     window_output = str(i3_ipc_event_data["container"]["output"])
     focused = tree.find_focused()
@@ -53,44 +56,46 @@ async def on_window_focus(i3, event):
     deco_rect = str(i3_ipc_event_data["container"]["deco_rect"])
     window_rect = str(i3_ipc_event_data["container"]["window_rect"])
     window_geometery = str(i3_ipc_event_data["container"]["geometry"])
+
     # Clear the screen and print a report.
     clear()
+
     #print(f"output: {window_output}")
-    print(f"output: ", end = '')
+    print(f"output: \t", end = '')
     for output in outputs:
         if window_output in output.name:
             print(f"[{output.name}] ", end = '')
         else:
             print(f"{output.name} ", end = '')
-    print(f"\nworkspace: ", end = '')
+    print(f"\nworkspace:\t", end = '')
     for workspace in workspaces:
         if window_workspace.name in workspace.name:
             print(f"[{workspace.name}] ", end = '')
         else:
             print(f"{workspace.name} ", end = '')
-    print(f"\ncontainer_id: {window_container_id}")
-    print(f"title: {window_title}")
-    print(f"instance: {window_instance}")
-    print(f"class: {window_class}")
-    print(f"id: {window_id}")
-    print(f"type: {window_type}")
-    print(f"marks: {window_marks}")
+    print(f"\ncontainer_id:\t{window_container_id}")
+    print(f"title:\t\t{window_title}")
+    print(f"instance:\t{window_instance}")
+    print(f"class:\t\t{window_class}")
+    print(f"id:\t\t{window_id}")
+    print(f"type:\t\t{window_type}")
+    print(f"marks:\t\t{window_marks}")
     dimension = ''
     for key, value in literal_eval(rect).items():
         dimension += str(value) + ', '
-    print(f"rect: ({dimension.rstrip(', , ')})")
+    print(f"rect:\t\t({dimension.rstrip(', , ')})")
     dimension = ''
     for key, value in literal_eval(deco_rect).items():
         dimension += str(value) + ', '
-    print(f"deco: ({dimension.rstrip(', , ')})")
+    print(f"deco:\t\t({dimension.rstrip(', , ')})")
     dimension = ''
     for key, value in literal_eval(window_rect).items():
         dimension += str(value) + ', '
-    print(f"window: ({dimension.rstrip(', , ')})")
+    print(f"window:\t\t({dimension.rstrip(', , ')})")
     dimension = ''
     for key, value in literal_eval(window_geometery).items():
         dimension += str(value) + ', '
-    print(f"geometery: ({dimension.rstrip(', , ')})\n")
+    print(f"geometery:\t({dimension.rstrip(', , ')})\n")
 
 
 async def binding_report(i3, event):
@@ -112,7 +117,7 @@ async def main():
     i3.on(Event.WINDOW_FOCUS, on_window_focus)
     i3.on(Event.BINDING, binding_report)
     i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
-    #i3.on(Event.WINDOW, on_window)
+    # i3.on(Event.WINDOW, on_window)
 
     # Reading from file
     # with open("./i3_info.cache", "r+") as cache_file:
