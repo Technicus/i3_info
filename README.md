@@ -2,8 +2,8 @@
 A tool to display information about i3 window manager.
 
 ## Bugs
-Currently there is no error handeling and there are various unknown problems.
-Sometimes the program fails, but for now it works enough to test.
+Currently there is no error handeling.
+Sometimes the program fails due to a JSON parse error in the line: `tree = await i3.get_tree()`.
 
 ### Error
 ```

@@ -32,7 +32,6 @@ def on_window(i3, event):
 
 # Report event and tree information
 async def on_window_focus(i3, event):
-    #tree = await i3.get_tree()
     tree = await i3.get_tree()
     workspaces = await i3.get_workspaces()
     outputs = await i3.get_outputs()
