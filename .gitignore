@@ -5,6 +5,7 @@ __pycache__/
 
 # cache files
 *.cache
+*.kate-swp
 
 # C extensions
 *.so

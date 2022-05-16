@@ -90,12 +90,9 @@ async def on_window_focus(i3, event):
         dimension += str(value) + ', '
     print(f"geometery: ({dimension.rstrip(', , ')})\n")
 
-    #if event.ipc_data.has_key("binding"):
     if "binding" in event.ipc_data:
         binding = event.ipc_data["binding"]["command"].strip()
-        #binding = event.ipc_data
         print(f"binding: {binding}\n")
-    #else:
 
     # get some information about the focused window
     #print(f'Focused window: {focused.name}')
