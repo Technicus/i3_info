@@ -4,7 +4,7 @@ Inspired by bublabs top secret technology `i3_info`.<br>
 Watch bublabs video explaination of the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).<br>
 
 ## Bugs
-The program will eventually fail due to a JSON parse error in the line: `tree = await i3.get_tree()`.
+The program will eventually fail due to a JSON parse error in the line: [`tree = await i3.get_tree()`](https://github.com/Technicus/i3_info/blob/32a803ecff5f358e930020a6205b979143818c0f/i3_info.py#L31).
 
 ### Error
 ```
