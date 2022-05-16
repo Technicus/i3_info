@@ -1,0 +1,68 @@
+event:
+  <i3ipc.events.WindowEvent object at 0x7f4b3db3a7d0>
+
+i3.get_tree():
+  <i3ipc.aio.connection.Con object at 0x7f4b3da9c8e0>
+
+event.ipc_data():
+  {
+    "change": "focus",
+    "container": {
+        "id": 93976463829248,
+        "type": "con",
+        "orientation": "none",
+        "scratchpad_state": "none",
+        "percent": 0.23437500000000006,
+        "urgent": false,
+        "marks": [],
+        "focused": true,
+        "output": "HDMI1",
+        "layout": "splith",
+        "workspace_layout": "default",
+        "last_split_layout": "splith",
+        "border": "none",
+        "current_border_width": 0,
+        "rect": {
+            "x": 2836,
+            "y": 56,
+            "width": 450,
+            "height": 1024
+        },
+        "deco_rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+        },
+        "window_rect": {
+            "x": 0,
+            "y": 0,
+            "width": 450,
+            "height": 1024
+        },
+        "geometry": {
+            "x": 0,
+            "y": 0,
+            "width": 882,
+            "height": 665
+        },
+        "name": "technicus@Nomadatron: ../i3_info/development",
+        "window_icon_padding": -1,
+        "window": 27262983,
+        "window_type": "normal",
+        "window_properties": {
+            "class": "Terminator",
+            "instance": "terminator",
+            "machine": "Nomadatron",
+            "title": "technicus@Nomadatron: ../i3_info/development",
+            "transient_for": null
+        },
+        "nodes": [],
+        "floating_nodes": [],
+        "focus": [],
+        "fullscreen_mode": 0,
+        "sticky": false,
+        "floating": "auto_off",
+        "swallows": []
+    }
+}
