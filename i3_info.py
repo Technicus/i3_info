@@ -32,7 +32,8 @@ def on_window(i3, event):
 
 # Report event and tree information
 async def on_window_focus(i3, event):
-    i3_tree = await i3.get_tree()
+    #tree = await i3.get_tree()
+    tree = await i3.get_tree()
     workspaces = await i3.get_workspaces()
     outputs = await i3.get_outputs()
     # Capture event data.
@@ -40,11 +41,11 @@ async def on_window_focus(i3, event):
     # Convert into JSON:
     i3_ipc_event_data_formatted = dumps(i3_ipc_event_data, indent=2)
     # Writing data to a file
-    with open("./i3_info_window.cache", "w") as cache_file:
-        cache_file.write(f"i3.on(Event.WINDOW_FOCUS, on_window_focus):\n{i3_ipc_event_data_formatted}\n")
+    #with open("./i3_info_window.cache", "w") as cache_file:
+        #cache_file.write(f"{i3_ipc_event_data_formatted}\n")
     # Parse data into variables
     window_output = str(i3_ipc_event_data["container"]["output"])
-    focused = i3_tree.find_focused()
+    focused = tree.find_focused()
     window_workspace = focused.workspace()
     window_container_id = str(i3_ipc_event_data["container"]["id"])
     window_title = str(i3_ipc_event_data["container"]["window_properties"]["title"]).rsplit(' ', 1)[-1]
