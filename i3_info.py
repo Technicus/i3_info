@@ -66,13 +66,13 @@ async def on_window_focus(i3, event):
         if window_output in output.name:
             print(f"[{output.name}] ", end = '')
         else:
-            print(f"{output.name} ", end = '')
+            print(f" {output.name}  ", end = '')
     print(f"\nworkspace:\t", end = '')
     for workspace in workspaces:
         if window_workspace.name in workspace.name:
             print(f"[{workspace.name}] ", end = '')
         else:
-            print(f"{workspace.name} ", end = '')
+            print(f" {workspace.name}  ", end = '')
     print(f"\ncontainer_id:\t{window_container_id}")
     print(f"title:\t\t{window_title}")
     print(f"instance:\t{window_instance}")
