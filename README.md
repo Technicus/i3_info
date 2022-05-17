@@ -1,15 +1,12 @@
 # i3_info
-This is a recreation of the i3info tool written by budlabs.
-<br>
-budlabs describes i3info as top secret technology.
-<br>
-Watch budlabs video explaination of the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).
-<br>
-When i3_info runs, information about focused windows, workspace, is continuously updated and displayed in a terminal.
-<br>
+This is a recreation of the i3info tool written by budlabs.<br>
+budlabs describes i3info as top secret technology.<br>
+Watch budlabs video explaination regarding the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).<br>
+When i3_info runs, information about focused windows, workspaces, and active keybinding is continuously updated and displayed in a terminal.<br>
 
 ## Bugs
-The program will eventually fail due to a JSON parse error in the line: [`tree = await i3.get_tree()`](https://github.com/Technicus/i3_info/blob/32a803ecff5f358e930020a6205b979143818c0f/i3_info.py#L31).
+When awaiting tree information from i3ipc.Connection with `tree = await i3.get_tree()` inorder to parse the focused workspace, <br>
+the program will eventually fail due to a JSON parse error.<br>
 
 ### Error
 ```
@@ -36,4 +33,11 @@ Traceback (most recent call last):
     obj, end = self.scan_once(s, idx)
 json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 36441 (char 36440)
 
+```
+### Solution
+```
+def get_current_workspace():
+    workspace = check_output("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name' | cut -d'\"' -f2", shell=True)
+    workspace = str(workspace).strip("b'").rstrip("/\/n")
+    return workspace
 ```
