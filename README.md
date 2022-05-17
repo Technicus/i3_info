@@ -2,7 +2,7 @@
 This is a recreation of the i3info tool written by budlabs.<br>
 budlabs describes i3info as top secret technology.<br>
 Watch budlabs video explaination regarding the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).<br>
-When i3_info runs, information about focused windows, workspaces, and active keybinding is continuously updated and displayed in a terminal.<br>
+When i3_info runs, information about focused windows, workspaces, and active keybindings are continuously updated and displayed in a terminal.<br>
 
 ## Bugs
 When awaiting tree information from i3ipc.Connection with `tree = await i3.get_tree()` inorder to parse the focused workspace, <br>
