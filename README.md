@@ -1,5 +1,5 @@
 # i3_info
-This is a recreation of the i3info tool wrutteb by budlabs.
+This is a recreation of the i3info tool written by budlabs.
 <br>
 budlabs describes i3info as top secret technology.
 <br>
