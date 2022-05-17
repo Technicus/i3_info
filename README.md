@@ -3,7 +3,7 @@ This is a recreation of the i3info tool written by budlabs.
 <br>
 budlabs describes i3info as top secret technology.
 <br>
-Watch bublabs video explaination of the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).
+Watch budlabs video explaination of the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).
 <br>
 When i3_info runs, information about focused windows, workspace, is continuously updated and displayed in a terminal.
 <br>
