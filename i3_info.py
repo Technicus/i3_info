@@ -23,6 +23,7 @@ def get_current_workspace():
     workspace = str(workspace).strip("b'").rstrip("/\/n")
     return workspace
 
+
 # Define a callback to be called when you switch workspaces.
 async def on_workspace_focus(i3, event):
     # The first parameter is the connection to the ipc and the second is an object
@@ -55,23 +56,18 @@ async def on_window_focus(i3, event):
     # Convert into JSON:
     i3_ipc_event_data_formatted = dumps(i3_ipc_event_data, indent=2)
 
-
     # Writing data to a file
     with open("./i3_info_window.cache", "w") as cache_file:
         cache_file.write(f"{i3_ipc_event_data_formatted}\n")
 
     # Parse data into variables
-    window_output = str(i3_ipc_event_data["container"]["output"])
     # focused = tree.find_focused()
     # window_workspace = focused.workspace()
-
-    # window_workspace = get_current_workspace()
-
-    window_workspace = await i3.get_tree().find_focused().workspace().name
+    window_output = str(i3_ipc_event_data["container"]["output"])
+    window_workspace = get_current_workspace()
+    # window_workspace = await i3.get_tree().find_focused().workspace().name
 
     window_container_id = str(i3_ipc_event_data["container"]["id"])
-
-
     window_title = str(i3_ipc_event_data["container"]["window_properties"]["title"]).rsplit(' ', 1)[-1]
     window_instance = str(i3_ipc_event_data["container"]["window_properties"]["instance"]).rsplit(' ', 1)[-1]
     window_class = str(i3_ipc_event_data["container"]["window_properties"]["class"]).rsplit(' ', 1)[-1]

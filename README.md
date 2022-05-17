@@ -1,7 +1,12 @@
 # i3_info
-A tool to display information about i3 window manager.<br>
-Inspired by budlabs top secret technology `i3_info`.<br>
-Watch bublabs video explaination of the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).<br>
+This is a recreation of the i3info tool wrutteb by budlabs.
+<br>
+budlabs describes i3info as top secret technology.
+<br>
+Watch bublabs video explaination of the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).
+<br>
+When i3_info runs, information about focused windows, workspace, is continuously updated and displayed in a terminal.
+<br>
 
 ## Bugs
 The program will eventually fail due to a JSON parse error in the line: [`tree = await i3.get_tree()`](https://github.com/Technicus/i3_info/blob/32a803ecff5f358e930020a6205b979143818c0f/i3_info.py#L31).
