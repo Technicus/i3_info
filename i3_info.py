@@ -125,6 +125,7 @@ async def binding_report(i3, event):
     binevent_state_maskding.reverse()
     symbol = event.ipc_data["binding"]["symbol"]
     binding = event.ipc_data["binding"]["command"].strip()
+    on_window_focus(i3, event)
     print(f"binding:\n  {'+'.join(binevent_state_maskding)}+{symbol}\n    {binding}\n")
     # Capture event data.
     i3_ipc_event_data = event.ipc_data
