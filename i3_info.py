@@ -11,32 +11,19 @@ import asyncio
 from ast import literal_eval
 import io
 from contextlib import redirect_stdout
-from io import StringIO
-#from cStringIO import StringIO # Python3 use: from io import StringIO
+#from io import StringIO
+##from cStringIO import StringIO # Python3 use: from io import StringIO
 import sys
+import subprocess
 
 
 def clear():
     system("clear")
 
 def get_current_workspace():
-    #return system("i3-msg -t get_workspaces | jq '.[] | select(.focused==true).name' | cut -d'\'' -f2")
-    #return system(""i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name'   | cut -d"\"" -f2"")
-    #with io.StringIO() as buf, redirect_stdout(buf):
-        #workspace_focused =
-        #str(system("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name'")).replace("\"", '')
-        #print(buf.getvalue())
-        #output = buf.getvalue()
-
-    old_stdout = sys.stdout
-    sys.stdout = mystdout = StringIO()
-
-    # blah blah lots of code ...
-    str(system("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name'")).replace("\"", '')
-    output = sys.stdout.name
-    sys.stdout = old_stdout
-    print(f"{output}")
-    return output
+    workspace = subprocess.check_output("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name' | cut -d'\"' -f2", shell=True)
+    workspace = str(workspace).strip("b'").rstrip("/\/n")
+    return workspace
 
 # Define a callback to be called when you switch workspaces.
 async def on_workspace_focus(i3, event):
@@ -92,9 +79,8 @@ async def on_window_focus(i3, event):
     window_geometery = str(i3_ipc_event_data["container"]["geometry"])
 
     # Clear the screen and print a report.
-    #clear()
+    clear()
 
-    #print(f"output: {window_output}")
     print(f"output: \t", end = '')
     for output in outputs:
         if window_output in output.name:
@@ -102,7 +88,6 @@ async def on_window_focus(i3, event):
         else:
             print(f" {output.name}  ", end = '')
     print(f"\nworkspace:\t", end = '')
-    print(f"{str(window_workspace)} ", end = '')
     for workspace in workspaces:
         if str(window_workspace) in workspace.name:
             print(f"[{workspace.name}] ", end = '')
@@ -152,7 +137,7 @@ async def main():
     #i3.on(Event.WINDOW_FOCUS, on_window_focus)
     i3.on(Event.WINDOW_FOCUS, on_window_focus)
     #i3.on(Event.WINDOW, on_window_focus)
-    #i3.on(Event.BINDING, binding_report)
+    i3.on(Event.BINDING, binding_report)
     #i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
 
     # Reading from file
