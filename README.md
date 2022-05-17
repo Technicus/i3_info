@@ -1,6 +1,6 @@
 # i3_info
 A tool to display information about i3 window manager.<br>
-Inspired by bublabs top secret technology `i3_info`.<br>
+Inspired by budlabs top secret technology `i3_info`.<br>
 Watch bublabs video explaination of the utility ["i3wm HOWTO scratchpad and start programs (i3run)"](https://www.youtube.com/watch?v=wKuQzx6jC_I&t=6m50s).<br>
 
 ## Bugs
