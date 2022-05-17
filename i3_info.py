@@ -11,17 +11,15 @@ import asyncio
 from ast import literal_eval
 import io
 from contextlib import redirect_stdout
-#from io import StringIO
-##from cStringIO import StringIO # Python3 use: from io import StringIO
-import sys
-import subprocess
+#import sys
+from subprocess import check_output
 
 
 def clear():
     system("clear")
 
 def get_current_workspace():
-    workspace = subprocess.check_output("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name' | cut -d'\"' -f2", shell=True)
+    workspace = check_output("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name' | cut -d'\"' -f2", shell=True)
     workspace = str(workspace).strip("b'").rstrip("/\/n")
     return workspace
 
