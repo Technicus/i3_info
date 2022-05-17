@@ -1,7 +1,7 @@
 #!/bin/python
 
 # https://i3ipc-python.readthedocs.io/en/latest/
-
+# https://www.programcreek.com/python/example/97370/i3ipc.Connection
 
 from json import dumps
 from os import system
@@ -55,16 +55,23 @@ async def on_window_focus(i3, event):
     # Convert into JSON:
     i3_ipc_event_data_formatted = dumps(i3_ipc_event_data, indent=2)
 
+
     # Writing data to a file
     with open("./i3_info_window.cache", "w") as cache_file:
         cache_file.write(f"{i3_ipc_event_data_formatted}\n")
 
     # Parse data into variables
     window_output = str(i3_ipc_event_data["container"]["output"])
-    #focused = tree.find_focused()
-    #window_workspace = focused.workspace()
-    window_workspace = get_current_workspace()
+    # focused = tree.find_focused()
+    # window_workspace = focused.workspace()
+
+    # window_workspace = get_current_workspace()
+
+    window_workspace = await i3.get_tree().find_focused().workspace().name
+
     window_container_id = str(i3_ipc_event_data["container"]["id"])
+
+
     window_title = str(i3_ipc_event_data["container"]["window_properties"]["title"]).rsplit(' ', 1)[-1]
     window_instance = str(i3_ipc_event_data["container"]["window_properties"]["instance"]).rsplit(' ', 1)[-1]
     window_class = str(i3_ipc_event_data["container"]["window_properties"]["class"]).rsplit(' ', 1)[-1]
