@@ -9,16 +9,49 @@ from i3ipc.aio import Connection
 from i3ipc import Event
 import asyncio
 from ast import literal_eval
+import io
+from contextlib import redirect_stdout
+from io import StringIO
+#from cStringIO import StringIO # Python3 use: from io import StringIO
+import sys
 
 
 def clear():
     system("clear")
 
+def get_current_workspace():
+    #return system("i3-msg -t get_workspaces | jq '.[] | select(.focused==true).name' | cut -d'\'' -f2")
+    #return system(""i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name'   | cut -d"\"" -f2"")
+    #with io.StringIO() as buf, redirect_stdout(buf):
+        #workspace_focused =
+        #str(system("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name'")).replace("\"", '')
+        #print(buf.getvalue())
+        #output = buf.getvalue()
+
+    old_stdout = sys.stdout
+    sys.stdout = mystdout = StringIO()
+
+    # blah blah lots of code ...
+    str(system("i3-msg -t get_workspaces   | jq '.[] | select(.focused==true).name'")).replace("\"", '')
+    output = sys.stdout.name
+    sys.stdout = old_stdout
+    print(f"{output}")
+    return output
 
 # Define a callback to be called when you switch workspaces.
 async def on_workspace_focus(i3, event):
     # The first parameter is the connection to the ipc and the second is an object
     # with the data of the event sent from i3.
+
+    # Capture event data.
+    i3_ipc_event_data = event.ipc_data
+    # Convert into JSON:
+    i3_ipc_event_data_formatted = dumps(i3_ipc_event_data, indent=2)
+
+    # Writing data to a file
+    with open("./i3_info_on_workspace_focus.cache", "w") as cache_file:
+        cache_file.write(f"{i3_ipc_event_data_formatted}\n")
+
     if event.current:
         print(f"on_workspace_focus(i3, event):\n  {event}")
         #for window in event.current.leaves():
@@ -28,7 +61,7 @@ async def on_workspace_focus(i3, event):
 
 # Report event and tree information
 async def on_window_focus(i3, event):
-    tree = await i3.get_tree()
+    #tree = await i3.get_tree()
     workspaces = await i3.get_workspaces()
     outputs = await i3.get_outputs()
 
@@ -43,8 +76,9 @@ async def on_window_focus(i3, event):
 
     # Parse data into variables
     window_output = str(i3_ipc_event_data["container"]["output"])
-    focused = tree.find_focused()
-    window_workspace = focused.workspace()
+    #focused = tree.find_focused()
+    #window_workspace = focused.workspace()
+    window_workspace = get_current_workspace()
     window_container_id = str(i3_ipc_event_data["container"]["id"])
     window_title = str(i3_ipc_event_data["container"]["window_properties"]["title"]).rsplit(' ', 1)[-1]
     window_instance = str(i3_ipc_event_data["container"]["window_properties"]["instance"]).rsplit(' ', 1)[-1]
@@ -58,7 +92,7 @@ async def on_window_focus(i3, event):
     window_geometery = str(i3_ipc_event_data["container"]["geometry"])
 
     # Clear the screen and print a report.
-    clear()
+    #clear()
 
     #print(f"output: {window_output}")
     print(f"output: \t", end = '')
@@ -68,8 +102,9 @@ async def on_window_focus(i3, event):
         else:
             print(f" {output.name}  ", end = '')
     print(f"\nworkspace:\t", end = '')
+    print(f"{str(window_workspace)} ", end = '')
     for workspace in workspaces:
-        if window_workspace.name in workspace.name:
+        if str(window_workspace) in workspace.name:
             print(f"[{workspace.name}] ", end = '')
         else:
             print(f" {workspace.name}  ", end = '')
@@ -114,10 +149,11 @@ async def binding_report(i3, event):
 
 async def main():
     i3 = await Connection(auto_reconnect=True).connect()
+    #i3.on(Event.WINDOW_FOCUS, on_window_focus)
     i3.on(Event.WINDOW_FOCUS, on_window_focus)
-    i3.on(Event.BINDING, binding_report)
-    i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
-    # i3.on(Event.WINDOW, on_window)
+    #i3.on(Event.WINDOW, on_window_focus)
+    #i3.on(Event.BINDING, binding_report)
+    #i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
 
     # Reading from file
     # with open("./i3_info.cache", "r+") as cache_file:
