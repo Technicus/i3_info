@@ -32,8 +32,8 @@ Traceback (most recent call last):
   File "/usr/lib/python3.10/json/decoder.py", line 353, in raw_decode
     obj, end = self.scan_once(s, idx)
 json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 36441 (char 36440)
-
 ```
+
 ### Solution
 ```
 def get_current_workspace():
