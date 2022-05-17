@@ -121,8 +121,10 @@ async def on_window_focus(i3, event):
 
 async def binding_report(i3, event):
     # Report event and tree information
+    binevent_state_maskding = event.ipc_data["binding"]["event_state_mask"]
+    symbol = event.ipc_data["binding"]["symbol"]
     binding = event.ipc_data["binding"]["command"].strip()
-    print(f"binding:\n  {binding}\n")
+    print(f"binding:\n  {', '.join(binevent_state_maskding)}+{symbol}\n    {binding}\n")
     # Capture event data.
     i3_ipc_event_data = event.ipc_data
     # Convert into JSON:
